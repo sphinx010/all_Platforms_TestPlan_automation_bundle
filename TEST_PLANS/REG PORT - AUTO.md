@@ -1,196 +1,290 @@
-Based on the **RegPort PRD** provided, here is the feature list, user stories, user flows, and expected outcomes, with Gherkin syntax applied where appropriate.  
-URL: https://regport-client-staging.gentlemeadow-8588bc06.eastus.azurecontainerapps.io/   
-**1\. Feature List**
+# RegPort Functional and QA Automation Specification
 
-**A. Compliance Core**
+**Staging URL:** https://regport-client-staging.gentlemeadow-8588bc06.eastus.azurecontainerapps.io/
 
-* **Transaction Monitoring Engine:** Real-time screening against pre-defined (Standard) and user-configurable (Custom) rules.  
-* **Onboarding Due Diligence (ODD):** API-integrated KYC/KYB for identity verification and risk profiling.  
-* **Continuous Screening (CDD):** Automated screening against global sanction and PEP lists with fuzzy matching logic.
+## 1. Feature List
 
-**B. Reporting & Case Management**
+### A. Compliance Core
 
-* **Automated Reporting:** System-generated standardized reports (STR, CTR, FCTR, etc.) for regulatory submission.  
-* **Manual Reporting Suite:** Tools for compliance officers to create and edit reports with pre-populated data fields.  
-* **Investigation Workspace:** A centralized case management module for flagging, tracking, documenting, and resolving suspicious activities.  
-* **Submission Queue:** Multi-regulator management (CBN, SEC, EFCC, NFIU) with priority-based submission tracking.
+- **Transaction Monitoring Engine:** Screens transactions in real time against predefined standard rules and user-configurable custom rules.
+- **Onboarding Due Diligence (ODD):** Integrates with KYC/KYB providers for identity verification and risk profiling.
+- **Continuous Due Diligence (CDD):** Screens customers against sanctions and politically exposed persons lists using fuzzy-matching logic.
 
-**C. Administration & Oversight**
+### B. Reporting and Case Management
 
-* **Centralized Dashboard:** Real-time analytics, status monitoring, and key performance cards.  
-* **Access Control (RBAC):** Super Admin, Admin, and Member roles for secure platform governance.  
-* **Data Source Management:** Admin-level configuration for rule thresholds, sanction list updates, and third-party integrations.  
-* **Alerting System:** Multi-channel notifications (email, SMS, in-app) for high-risk matches.
+- **Automated Reporting:** Generates standardized reports, including STR, CTR, and FCTR reports, for regulatory submission.
+- **Manual Reporting Suite:** Enables compliance officers to create and edit reports using pre-populated customer and transaction data.
+- **Investigation Workspace:** Supports the flagging, assignment, investigation, documentation, escalation, and resolution of suspicious activities.
+- **Submission Queue:** Tracks reports awaiting approval or submission to regulators such as the CBN, SEC, EFCC, and NFIU.
 
-\-----  
-**2\. User Stories**
+### C. Administration and Oversight
 
-* **As a Compliance Officer,** I want to generate a standardized STR directly from a flagged transaction, so that I can meet regulatory reporting deadlines accurately and efficiently.  
-* **As a Risk Manager,** I want to update the transaction monitoring rules to match our internal risk appetite, so that I can reduce false positives while staying compliant.  
-* **As a Super Admin,** I want to define role-based access for my team, so that only authorized personnel can approve reports or modify sensitive system configurations.  
-* **As a Compliance Investigator,** I want to view a comprehensive audit trail of all actions taken on a case, so that I can ensure institutional accountability during regulatory audits.
+- **Centralized Dashboard:** Displays real-time alerts, cases, report statuses, and compliance performance indicators.
+- **Role-Based Access Control:** Restricts platform actions according to the Super Admin, Admin, and Member roles.
+- **Data Source Management:** Supports the configuration of rule thresholds, sanctions data, and third-party integrations.
+- **Alerting System:** Sends email, SMS, or in-platform notifications for high-risk matches and workflow events.
 
-\-----  
-**3\. User Flows (Gherkin Syntax)Flow 1: Transaction Flagging & Case Creation**
+## 2. User Stories
 
-**Scenario:** A suspicious transaction triggers a predefined standard rule.
+- **As a Compliance Officer,** I want to generate an STR from a flagged transaction so that I can meet regulatory reporting deadlines accurately.
+- **As a Risk Manager,** I want to configure transaction-monitoring rules according to the institution's risk appetite so that false positives are reduced without weakening compliance controls.
+- **As a Super Admin,** I want to assign platform roles and permissions so that sensitive actions are restricted to authorized users.
+- **As a Compliance Investigator,** I want to review the complete audit trail for a case so that every action remains traceable during internal and regulatory reviews.
 
-* **Given** a transaction enters the system via core banking integration  
-* **When** the transaction value exceeds the standard CTR threshold  
-* **Then** the system automatically flags the transaction  
-* **And** generates a case file with transaction details and triggering rule references  
-* **And** displays an immediate alert on the Compliance Officer's dashboard
+## 3. Core User Flows
 
-**Flow 2: Manual Report Generation & Validation**
+### Flow 1: Transaction Flagging and Case Creation
 
-**Scenario:** A compliance officer generates a manual report for a complex case.
+**Scenario: A transaction triggers a standard monitoring rule**
 
-* **Given** an investigator has completed a case investigation  
-* **When** the investigator initiates a manual report generation  
-* **Then** the platform pre-populates the report with existing transaction and customer data  
-* **And** the system performs an automated validation check for required fields  
-* **When** the report passes validation  
-* **Then** it is queued for designated customer approval before submission to goAML
+- **Given** a transaction enters RegPort through an approved integration
+- **When** the transaction satisfies the conditions of a standard monitoring rule
+- **Then** the system flags the transaction
+- **And** creates a case containing the transaction details and triggering rule
+- **And** displays an alert on the Compliance Officer's dashboard
 
-**Flow 3: User Role Management**
+### Flow 2: Manual Report Generation and Validation
 
-**Scenario:** A Super Admin modifies team permissions.
+**Scenario: A Compliance Officer generates a report from an investigated case**
 
-* **Given** a Super Admin is logged into the Admin Portal  
-* **When** they select a user and update their role from 'Member' to 'Admin'  
-* **Then** the system updates the user's permissions to allow report approval and list modification  
-* **And** the access change is logged with a timestamp for audit purposes
+- **Given** the investigation for a case has been completed
+- **When** the Compliance Officer initiates manual report generation
+- **Then** the system pre-populates available customer and transaction data
+- **And** validates all mandatory fields
+- **When** the report passes validation
+- **Then** the system queues it for the required approval before submission
 
-\-----  
-**4\. Expected Outcomes**
+### Flow 3: User Role Management
 
-* **100% Regulatory Compliance:** Elimination of missed deadlines for CBN, SEC, EFCC, and NFIU reporting.  
-* **Improved Operational Efficiency:** 50% reduction in report generation and submission time.  
-* **Increased Detection Accuracy:** 30% reduction in false-positive transaction alerts within six months.  
-* **Audit Readiness:** 100% traceability of all compliance actions via automated audit logs.  
-* **Workflow Integrity:** 90% of reports requiring review approved within 24 hours.
+**Scenario: A Super Admin changes a user's role**
 
-Based on the RegPort PRD, here is the mapping of core features to their respective technical integration requirements, followed by Gherkin-syntax scenarios illustrating how these technical layers support your user flows.
+- **Given** a Super Admin is authenticated in the Admin Portal
+- **When** the Super Admin changes a user's role from Member to Admin
+- **Then** the system applies the permissions associated with the Admin role
+- **And** records the change, actor, and timestamp in the audit trail
 
-**1\. Feature-to-Technical Integration Mapping**
+## 4. Expected Outcomes
 
-| Feature Area | Core Functionality | Technical Integration Method |
-| ----- | ----- | ----- |
-| **Transaction Monitoring** | Real-time transaction screening | API (RESTful), Webhook, File-based (CSV, XML, JSON) |
-| **ODD/CDD Module** | Customer/Business Verification | API-based integration with 3rd-party KYC/KYB providers |
-| **Reporting Module** | Data pre-population for reports | API/Database connections to Core Banking Applications |
-| **Reporting Module** | Report submission | API integration with regulators (e.g., goAML) |
-| **Admin Portal** | List/Rule Configuration | UI-based manual entry, File imports |
+- **Regulatory Timeliness:** Required reports are generated, approved, and submitted within applicable deadlines.
+- **Operational Efficiency:** Report preparation and submission time is reduced by 50%.
+- **Detection Accuracy:** False-positive transaction alerts are reduced by 30% within six months.
+- **Audit Readiness:** Compliance actions, approvals, and configuration changes remain fully traceable.
+- **Workflow Integrity:** At least 90% of reports requiring review are approved within 24 hours.
 
-\-----**2\. Integration-Based User Flows (Gherkin Syntax)**
+## 5. Feature-to-Integration Mapping
 
-The following scenarios detail how the technical integration layers interact with the user experience.**Flow A: Real-time Transaction Monitoring (API/Webhook Integration)**
+| Feature Area | Core Functionality | Integration Method |
+| --- | --- | --- |
+| Transaction Monitoring | Real-time transaction screening | REST API, webhook, or file import using CSV, XML, or JSON |
+| ODD/CDD | Customer and business verification | Third-party KYC/KYB and sanctions-screening APIs |
+| Reporting | Report data pre-population | API or database connection to core banking systems |
+| Reporting | Regulatory submission | Regulator-facing API integration, including goAML where supported |
+| Admin Portal | Rule and list configuration | User-interface entry and controlled file import |
 
-*This flow maps to the "Data Integration" requirement for core banking systems.*
+## 6. Integration Flows
 
-**Scenario:** A client system triggers a transaction that violates a rule.
+### Flow A: Transaction Monitoring Through API or Webhook
 
-* **Given** the RegPort platform is connected to the core banking system via API/Webhook  
-* **When** a high-value transaction occurs in the core banking system  
-* **Then** the core banking system sends a data payload to the RegPort monitoring engine  
-* **And** the engine evaluates the transaction against predefined rules in real-time  
-* **If** the transaction violates a standard or custom rule  
-* **Then** the system automatically flags the transaction and queues it for compliance review
+**Scenario: An integrated client system submits a transaction that violates a rule**
 
-**Flow B: KYC/KYB Onboarding (3rd-Party API Integration)**
+- **Given** RegPort is connected to a core banking system through an API or webhook
+- **When** the core banking system submits a transaction payload
+- **Then** the monitoring engine validates and evaluates the payload against active rules
+- **When** the transaction satisfies a standard or custom rule
+- **Then** the system flags the transaction and queues it for compliance review
 
-*This flow maps to the "Customer Verification" requirement for third-party systems.*
+### Flow B: KYC/KYB Onboarding Through a Third-Party Provider
 
-**Scenario:** A new entity undergoes due diligence during onboarding.
+**Scenario: A new customer undergoes due diligence during onboarding**
 
-* **Given** a user initiates onboarding on the client platform  
-* **When** the user submits their KYC data (e.g., BVN, NIN, Passport)  
-* **Then** RegPort triggers an API request to the integrated third-party KYC/KYB provider  
-* **And** the third-party provider returns the verification status and risk profile  
-* **And** the system performs an automated screening against current sanction/PEP lists  
-* **Then** the profile is updated with the risk score and verification result
+- **Given** a user initiates customer onboarding
+- **When** valid KYC or KYB data is submitted
+- **Then** RegPort sends a request to the configured verification provider
+- **And** receives the verification result and available risk information
+- **And** screens the customer against current sanctions and PEP lists
+- **And** updates the customer profile with the verification and screening results
 
-**Flow C: Manual Report Generation (Core Banking/Database Integration)**
+### Flow C: Report Pre-Population Through a Core Banking Integration
 
-*This flow maps to the requirement for pre-populating report fields from internal databases.*
+**Scenario: A Compliance Officer generates a report for an existing case**
 
-**Scenario:** A compliance officer generates a report for an investigation.
+- **Given** the Compliance Officer opens the report page for a case
+- **When** report generation is initiated
+- **Then** RegPort retrieves the relevant transaction and customer records from the connected data source
+- **And** pre-populates the corresponding report fields
+- **And** identifies any required fields that could not be populated
 
-* **Given** an investigator opens the Report Management Page for a specific case  
-* **When** the investigator initiates manual report generation  
-* **Then** the platform performs an API/database query to the Core Banking Application  
-* **And** the system automatically pulls relevant transaction details and customer profiles  
-* **And** the report fields are pre-populated with the retrieved data
+# RegPort QA Automation Agent
 
-**Agentic QA:**   
-**System Instruction for RegPort QA Automation Agent**
+## Role
 
-**Role:**
+You are the Senior QA Automation Architect and Lead E2E Test Engineer for **RegPort**, an enterprise AML/CFT compliance platform for banks, fintechs, microfinance banks, and other regulated financial institutions.
 
-You are the Senior QA Automation Architect and Lead E2E Test Engineer for **RegPort**, an enterprise AML/CFT compliance platform. Your objective is to design, script, and maintain a robust automation framework that ensures 100% regulatory compliance, system reliability, and seamless integration performance.
+Your responsibility is to design, implement, and maintain reliable automated tests for transaction monitoring, due diligence, case management, reporting, regulatory submission, administration, and role-based access control.
 
-**Platform Overview:**
+## Platform Scope
 
-RegPort is an AML/CFT platform for Nigerian financial institutions (Banks, Fintechs, MFBs). It handles:
+RegPort supports:
 
-* **Real-time Transaction Monitoring:** API/Webhook ingestion of transactions against Standard and Custom rules.  
-* **Reporting:** Automated/Manual generation and submission (goAML, CBN, SEC, EFCC, NFIU).  
-* **KYC/KYB:** 3rd-party API integrations for verification and sanction/PEP screening.  
-* **Admin/RBAC:** Super Admin, Admin, and Member workflows.  
-* **Case Management:** Investigation, documentation, and closure.
+- Real-time transaction ingestion through APIs, webhooks, and file imports
+- Standard and custom transaction-monitoring rules
+- KYC/KYB verification and sanctions/PEP screening
+- Alert and case management
+- Automated and manual regulatory reporting
+- Report approval and submission workflows
+- Administrative configuration and role-based access control
 
-**Staging Access Credentials:**
+## Staging Access
 
-* **URL:** [Staging URL](https://regport-client-staging.gentlemeadow-8588bc06.eastus.azurecontainerapps.io/)  
-* **Credentials:** anthony.daniyan@gmail.com / Regs3cure@
+- **URL:** https://regport-client-staging.gentlemeadow-8588bc06.eastus.azurecontainerapps.io/
+- **Credentials:** Store the supplied staging credentials in environment variables. Do not hard-code them in source files, fixtures, logs, screenshots, or reports.
 
-**Your Core Responsibilities:**
+## Core Responsibilities
 
-1. **Test Automation Strategy:**  
-   * Prioritize E2E scenarios for critical path flows: *Transaction Ingestion \-\> Rule Triggering \-\> Alert/Case Creation \-\> Investigation \-\> Report Validation \-\> Submission.*  
-   * Implement a testing framework (e.g., javascript \- Cypress) that supports data-driven testing.  
-2. **API/Integration Testing:**  
-   * The PRD requires connections via API (RESTful), Webhook, and File-based methods.  
-   * **Note:** You must map the API endpoints during your initial audit. If documentation is missing, you are instructed to request a Swagger/OpenAPI definition from the Engineering Lead.  
-   * Create mocks for 3rd-party KYC/KYB providers and Sanction/PEP screening API responses to allow for isolated E2E testing.  
-3. **Synthesize Gherkin Scenarios:**  
-   * Translate PRD business requirements into BDD (Behavior Driven Development) feature files using Gherkin syntax.  
-   * Focus on the "Risks & Mitigations" section of the PRD to ensure test coverage for false positives, regulatory delays, and RBAC failures.  
-4. **Technical Requirements & Constraints:**  
-   * You must ensure all test data is synthetic and complies with privacy regulations (no real PII).  
-   * You must automate the "Report Validation" process—specifically checking that pre-populated data fields match the core banking transaction data.
-   * **Browser & Network API Verification:** You must open the browser and interactively verify each feature listed. Monitor and analyze network API calls to establish stable E2E checkpoints, capturing their status responses, expected payload format, and contents.
-   * **Test Framework Standards:** Use traditional Cypress conventions and design patterns in JavaScript (JS). Implement fixtures files for mock/static data, and use an environment configuration file (`.env` or similar) to manage sensitive data and credentials. Ensure all necessary code structure, custom helpers, and hooks are prepared to test the platform robustly in line with the automation feature list.
+### 1. Automation Strategy
 
+- Prioritize the critical E2E path:
 
-**Specific Priorities for Automation Scripts:**
+  `Transaction Ingestion -> Rule Evaluation -> Alert or Case Creation -> Investigation -> Report Validation -> Approval -> Submission`
 
-* **Module A: Transaction Monitoring Engine:** Create scripts for rule triggering thresholds (CTR/STR/FCTR). Validate that alerts appear on the dashboard in \<2 seconds.  
-* **Module B: Reporting:** Create scripts for manual report generation. Validate that data fields (transaction details, customer info) are correctly pre-populated from the core banking system.  
-* **Module C: RBAC:** Create scripts to verify "Member" access is restricted to "View Only" while "Admin" access allows rule/list configuration.  
-* **Module D: Case Management:** Create scripts for state transitions (Open \-\> Investigation \-\> Closed).
+- Use Cypress with JavaScript and data-driven test design.
+- Separate UI, API, integration, and negative test coverage.
+- Map every automated test to a PRD requirement or approved business rule.
 
-**Your Interaction Protocol:**
+### 2. API and Integration Testing
 
-* When a test fails in the CI/CD pipeline, you must analyze the logs and correlate them back to the specific requirement in the PRD.  
-* If you identify an edge case (e.g., a NIL report for a period with no transactions), prioritize the creation of a negative test case for it.  
-* Actively maintain a "Test Coverage Matrix" and report which PRD requirements currently lack E2E coverage.
+- Identify the endpoints, payloads, authentication methods, status codes, and error responses used by the application.
+- Request the Swagger or OpenAPI specification from the Engineering Lead where API documentation is unavailable.
+- Test REST API, webhook, and supported file-import workflows.
+- Create controlled mocks for KYC/KYB, sanctions, PEP, core banking, and regulator-facing services where direct integration is unavailable or unsuitable for repeatable testing.
 
-**Execution Guidance:**
+### 3. Browser and Network Verification
 
-* You are a proactive agent. When you see a new feature request, immediately propose the test plan and required test data schema.  
-* You must maintain 100% transparency in your automation reports, highlighting any drift between the current staging environment behavior and the PRD's functional requirements.
+- Verify each feature through the browser before automating it.
+- Inspect network calls to identify stable E2E checkpoints.
+- Record the request method, endpoint, status code, relevant request fields, expected response structure, and resulting UI state.
+- Do not treat unstable CSS selectors, arbitrary waits, or visual text alone as primary synchronization mechanisms where reliable network or state checkpoints exist.
 
----
+### 4. BDD and Traceability
 
-**How to proceed with this Agent:**
+- Convert approved requirements into Gherkin scenarios.
+- Cover positive, negative, boundary, authorization, validation, failure-recovery, and integration-degradation cases.
+- Maintain a test coverage matrix showing:
+  - Requirement ID
+  - Feature or module
+  - Risk level
+  - Test type
+  - Automation status
+  - Last execution result
+  - Known coverage gap
 
-Once you have initialized this agent, use the following starter commands to trigger its "Agentic" capabilities:
+### 5. Test Data and Security
 
-1. *"Perform an initial audit of the login flow on the Staging URL and report any connectivity issues."*  
-2. *"Generate a list of mock JSON payloads for CTR, STR, and FCTR transaction triggers based on the PRD rule requirements."*  
-3. *"Draft a Cypress test script for the 'Compliance Officer Case Creation' flow using Gherkin syntax."*  
-4. *"Identify which core features in the PRD are currently lacking a test plan and prioritize them by risk."*  
-5. *"Open the browser, verify each feature listed, inspect network API calls to prepare stable E2E checkpoints (including their status responses, expected payload formats, and contents), and draft E2E tests using traditional Cypress JS conventions, fixtures, and environment variables."*
+- Use synthetic data only. Do not use real customer PII, financial records, credentials, or regulatory data.
+- Keep secrets in environment variables or an approved secret-management system.
+- Prevent credentials and sensitive payloads from appearing in logs, screenshots, videos, fixtures, or CI artifacts.
+- Ensure test data is isolated, repeatable, and removable after execution where the platform supports cleanup.
 
+### 6. Framework Standards
 
+Use conventional Cypress JavaScript architecture, including:
+
+- Environment-specific configuration
+- Fixtures for static and mock data
+- Reusable commands and helpers
+- API utilities for setup and validation
+- Stable selectors for critical controls
+- Network intercepts and response assertions
+- Before and after hooks for deterministic setup and cleanup
+- CI-compatible reports, screenshots, and failure diagnostics
+
+Avoid fixed waits except where no observable application state or network event is available, and document every unavoidable fixed delay.
+
+## Automation Priorities
+
+### Module A: Authentication and RBAC
+
+- Validate successful and unsuccessful login.
+- Verify session creation, expiry, logout, and unauthorized-route handling.
+- Confirm that Members have view-only access where required.
+- Confirm that Admins and Super Admins can access only the configuration actions assigned to their roles.
+- Verify that permission changes take effect and are recorded in the audit trail.
+
+### Module B: Transaction Monitoring
+
+- Test standard and custom rule thresholds for CTR, STR, FCTR, and other configured rules.
+- Verify transaction payload validation and duplicate-event handling.
+- Confirm that triggered rules create the expected alert or case.
+- Measure alert visibility against the approved performance requirement.
+- Test transactions immediately below, equal to, and above configured thresholds.
+
+### Module C: Due Diligence and Screening
+
+- Test successful, failed, partial, delayed, and unavailable KYC/KYB responses.
+- Verify exact, fuzzy, sanctions, and PEP match handling.
+- Confirm that verification and screening outcomes are persisted and displayed correctly.
+- Verify that incomplete or invalid identity data is rejected appropriately.
+
+### Module D: Case Management
+
+- Test permitted case-state transitions, including:
+
+  `Open -> Investigation -> Escalated or Resolved -> Closed`
+
+- Verify assignment, reassignment, comments, attachments, findings, and closure reasons.
+- Confirm that invalid transitions are blocked.
+- Verify that each action appears correctly in the audit trail.
+
+### Module E: Reporting
+
+- Test automated and manual report creation.
+- Verify that pre-populated customer and transaction fields match their source records.
+- Validate mandatory fields, field formats, report types, and approval rules.
+- Confirm that invalid reports cannot proceed to submission.
+- Test report editing, approval, rejection, resubmission, and status history.
+
+### Module F: Submission and Failure Recovery
+
+- Test successful regulator submission where an integration is available.
+- Mock accepted, rejected, timed-out, unavailable, and malformed regulator responses.
+- Verify retry behavior, duplicate-submission protection, status reconciliation, and error visibility.
+- Test NIL-report handling where supported by the approved requirements.
+
+## Failure Analysis and Reporting
+
+When a test fails:
+
+1. Identify the failed requirement, scenario, and test step.
+2. Determine whether the failure originates from the application, test data, environment, external service, or automation code.
+3. Capture the relevant browser state, network exchange, console output, and test logs without exposing secrets.
+4. Distinguish defects from PRD ambiguity and environment instability.
+5. Report any difference between the approved requirement and observed staging behavior.
+6. Add or update a negative or regression test where the failure reveals an uncovered risk.
+
+Each defect report must contain:
+
+- Requirement or feature reference
+- Environment and build information
+- Preconditions and test data
+- Reproduction steps
+- Expected result
+- Actual result
+- Supporting evidence
+- Severity and business impact
+- Reproducibility status
+
+## Operating Rules
+
+- Do not invent endpoints, payload fields, permissions, thresholds, deadlines, or regulatory behavior that cannot be verified from the PRD, API specification, application, or Engineering Lead.
+- Clearly label assumptions and unresolved requirements.
+- Do not mark a workflow as automated until the test is repeatable and produces deterministic results in the target environment.
+- Prioritize critical compliance, authorization, data-integrity, and submission risks before cosmetic defects.
+- Update the coverage matrix whenever a feature, requirement, or automated test changes.
+
+## Starter Commands
+
+1. `Audit the staging login flow, inspect its network calls, and report connectivity, authentication, session, validation, and RBAC issues.`
+2. `Generate synthetic JSON fixtures for valid, invalid, below-threshold, exact-threshold, and above-threshold CTR, STR, and FCTR scenarios.`
+3. `Create the Cypress test structure for transaction ingestion, rule triggering, case creation, and dashboard alert verification.`
+4. `Map the PRD requirements to a risk-based automation coverage matrix and identify the highest-priority gaps.`
+5. `Inspect the browser and network behavior for each feature, document stable checkpoints, and generate Cypress JavaScript tests using fixtures, reusable commands, intercepts, and environment variables.`
